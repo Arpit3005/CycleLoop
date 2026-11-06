@@ -1,0 +1,175 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum StudentStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum BicycleStatus {
+  AVAILABLE
+  RENTED
+  MAINTENANCE
+  DECOMMISSIONED
+}
+
+enum RentalStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  OPERATOR
+}
+
+enum MaintenanceStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+model Student {
+  id           String        @id @default(uuid())
+  name         String
+  rollNo       String        @unique
+  branch       String
+  email        String        @unique
+  phone        String?
+  passwordHash String
+  status       StudentStatus @default(ACTIVE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  rentals      Rental[]
+  payments     Payment[]
+
+  @@index([rollNo])
+  @@index([email])
+}
+
+model Bicycle {
+  id           String        @id @default(uuid())
+  bicycleCode  String        @unique
+  qrToken      String        @unique
+  model        String        @default("Campus Cruiser Standard")
+  location     String        @default("Main Gate Hub")
+  status       BicycleStatus @default(AVAILABLE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  rentals      Rental[]
+  maintenance  Maintenance[]
+
+  @@index([bicycleCode])
+  @@index([qrToken])
+  @@index([status])
+}
+
+model Rental {
+  id              String       @id @default(uuid())
+  studentId       String
+  bicycleId       String
+  startTime       DateTime     @default(now())
+  endTime         DateTime?
+  hourlyRate      Decimal      @db.Decimal(10, 2)
+  durationMinutes Int?
+  totalAmount     Decimal?     @db.Decimal(10, 2)
+  status          RentalStatus @default(ACTIVE)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  student         Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  bicycle         Bicycle      @relation(fields: [bicycleId], references: [id], onDelete: Restrict)
+  payment         Payment?
+
+  @@index([studentId, status])
+  @@index([bicycleId, status])
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  rentalId      String        @unique
+  studentId     String
+  orderId       String        @unique
+  paymentId     String?
+  amount        Decimal       @db.Decimal(10, 2)
+  currency      String        @default("INR")
+  status        PaymentStatus @default(PENDING)
+  paymentMethod String        @default("UPI")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  rental        Rental        @relation(fields: [rentalId], references: [id], onDelete: Cascade)
+  student       Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([studentId, status])
+}
+
+model Pricing {
+  id            String   @id @default(uuid())
+  hourlyRate    Decimal  @db.Decimal(10, 2)
+  effectiveFrom DateTime @default(now())
+  updatedBy     String   @default("SYSTEM")
+  note          String?
+  createdAt     DateTime @default(now())
+
+  @@index([effectiveFrom])
+}
+
+model Maintenance {
+  id              String            @id @default(uuid())
+  bicycleId       String
+  description     String
+  resolutionNotes String?
+  status          MaintenanceStatus @default(OPEN)
+  reportedAt      DateTime          @default(now())
+  resolvedAt      DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  bicycle         Bicycle           @relation(fields: [bicycleId], references: [id], onDelete: Cascade)
+
+  @@index([bicycleId, status])
+}
+
+model Admin {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         AdminRole @default(SUPER_ADMIN)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([email])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String
+  actorType  String
+  action     String
+  entityType String
+  entityId   String
+  metadata   String?  @db.Text
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}

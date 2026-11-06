@@ -1,0 +1,28 @@
+{
+  "name": "cycleloop",
+  "version": "1.0.0",
+  "description": "CycleLoop – Smart Campus Bicycle Rental System",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "seed": "cd backend && npm run prisma:seed",
+    "test": "cd backend && npm run test"
+  },
+  "keywords": [
+    "campus",
+    "bicycle-sharing",
+    "iot",
+    "qr-code",
+    "upi",
+    "fullstack",
+    "react",
+    "express",
+    "prisma",
+    "postgresql"
+  ],
+  "author": "Antigravity Engineering",
+  "license": "ISC"
+}
