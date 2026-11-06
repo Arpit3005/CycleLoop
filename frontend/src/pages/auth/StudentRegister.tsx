@@ -8,7 +8,7 @@ export const StudentRegister: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     rollNo: '',
-    branch: 'Computer Science & Engineering',
+    branch: 'Electrical and Electronics Engineering',
     email: '',
     phone: '',
     password: ''
@@ -19,10 +19,10 @@ export const StudentRegister: React.FC = () => {
   const navigate = useNavigate();
 
   const branches = [
+    'Electrical and Electronics Engineering',
     'Computer Science & Engineering',
     'Electronics & Communication',
     'Mechanical Engineering',
-    'Electrical & Electronics',
     'Civil Engineering',
     'Biotechnology',
     'Information Technology'
@@ -131,7 +131,7 @@ export const StudentRegister: React.FC = () => {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="name@campuscycle.edu"
+                  placeholder="525005@student.nitandhra.ac.in"
                   className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-campus-500 text-sm"
                 />
               </div>

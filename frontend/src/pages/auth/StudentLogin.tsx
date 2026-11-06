@@ -65,7 +65,7 @@ export const StudentLogin: React.FC = () => {
                 required
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                placeholder="21CS042 or aarav@campuscycle.edu"
+                placeholder="525005 or 525005@student.nitandhra.ac.in"
                 className="w-full pl-11 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-hidden focus:ring-2 focus:ring-campus-500 focus:border-transparent text-sm transition-all"
               />
             </div>
@@ -102,25 +102,51 @@ export const StudentLogin: React.FC = () => {
           </button>
         </form>
 
-        {/* Demo Fast Login helpers */}
+        {/* Quick Fill Student Accounts */}
         <div className="mt-6 pt-5 border-t border-slate-100">
           <p className="text-xs text-slate-500 font-medium text-center mb-2.5">
-            Quick Fill Demo Accounts:
+            Quick Fill Seeded Accounts (EEE Dept):
           </p>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-center">
             <button
               type="button"
-              onClick={() => handleDemoFill('aarav@campuscycle.edu')}
-              className="flex-1 py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors"
+              onClick={() => handleDemoFill('525005@student.nitandhra.ac.in')}
+              className="py-1 px-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors truncate"
+              title="Arpit Kumar Ranjan (525005)"
             >
-              Aarav (21CS042)
+              Arpit (525005)
             </button>
             <button
               type="button"
-              onClick={() => handleDemoFill('priya@campuscycle.edu')}
-              className="flex-1 py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors"
+              onClick={() => handleDemoFill('525004@student.nitandhra.ac.in')}
+              className="py-1 px-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors truncate"
+              title="Anshuman Mishra (525004)"
             >
-              Priya (21EC019)
+              Anshuman (525004)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDemoFill('525040@student.nitandhra.ac.in')}
+              className="py-1 px-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors truncate"
+              title="Linkan Sarkar (525040)"
+            >
+              Linkan (525040)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDemoFill('525029@student.nitandhra.ac.in')}
+              className="py-1 px-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors truncate"
+              title="Karthepan Murali Kannan (525029)"
+            >
+              Karthepan (525029)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDemoFill('525042@student.nitandhra.ac.in')}
+              className="py-1 px-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors truncate"
+              title="Midathada Chaitanya Naidu (525042)"
+            >
+              Chaitanya (525042)
             </button>
           </div>
         </div>

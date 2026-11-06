@@ -8,7 +8,7 @@ let prisma: PrismaClient;
 async function main() {
   await ensurePostgresRunning(5432);
   prisma = new PrismaClient();
-  console.log('[Seed] Seeding CycleLoop database...');
+  console.log('[Seed] Seeding CycleLoop database with authentic student records...');
 
   // 1. Initial Pricing (₹12.50/hr as per spec)
   const existingPricing = await prisma.pricing.findFirst();
@@ -49,51 +49,74 @@ async function main() {
       role: AdminRole.OPERATOR
     }
   });
-  console.log('[Seed] Admins created (admin@campuscycle.edu / Admin@123).');
+  console.log('[Seed] Admins verified (admin@campuscycle.edu / Admin@123).');
 
-  // 3. Students
+  // 3. Clear old mock data
+  console.log('[Seed] Clearing old mock student records and test rental histories...');
+  await prisma.payment.deleteMany({});
+  await prisma.rental.deleteMany({});
+  await prisma.student.deleteMany({});
+
+  // 4. Seed Specified NIT Andhra Student Accounts
   const studentPasswordHash = await bcrypt.hash('Student@123', 10);
 
   const studentsData = [
     {
-      name: 'Aarav Sharma',
-      rollNo: '21CS042',
-      branch: 'Computer Science & Engineering',
-      email: 'aarav@campuscycle.edu',
-      phone: '+91 98765 43210',
+      name: 'Arpit Kumar Ranjan',
+      rollNo: '525005',
+      branch: 'Electrical and Electronics Engineering',
+      email: '525005@student.nitandhra.ac.in',
+      phone: '+91 98765 52505',
       passwordHash: studentPasswordHash,
       status: StudentStatus.ACTIVE
     },
     {
-      name: 'Priya Patel',
-      rollNo: '21EC019',
-      branch: 'Electronics & Communication',
-      email: 'priya@campuscycle.edu',
-      phone: '+91 98765 43211',
+      name: 'Anshuman Mishra',
+      rollNo: '525004',
+      branch: 'Electrical and Electronics Engineering',
+      email: '525004@student.nitandhra.ac.in',
+      phone: '+91 98765 52504',
       passwordHash: studentPasswordHash,
       status: StudentStatus.ACTIVE
     },
     {
-      name: 'Rohan Verma',
-      rollNo: '22ME088',
-      branch: 'Mechanical Engineering',
-      email: 'rohan@campuscycle.edu',
-      phone: '+91 98765 43212',
+      name: 'Linkan Sarkar',
+      rollNo: '525040',
+      branch: 'Electrical and Electronics Engineering',
+      email: '525040@student.nitandhra.ac.in',
+      phone: '+91 98765 52540',
+      passwordHash: studentPasswordHash,
+      status: StudentStatus.ACTIVE
+    },
+    {
+      name: 'Karthepan Murali Kannan',
+      rollNo: '525029',
+      branch: 'Electrical and Electronics Engineering',
+      email: '525029@student.nitandhra.ac.in',
+      phone: '+91 98765 52529',
+      passwordHash: studentPasswordHash,
+      status: StudentStatus.ACTIVE
+    },
+    {
+      name: 'Midathada Chaitanya Naidu',
+      rollNo: '525042',
+      branch: 'Electrical and Electronics Engineering',
+      email: '525042@student.nitandhra.ac.in',
+      phone: '+91 98765 52542',
       passwordHash: studentPasswordHash,
       status: StudentStatus.ACTIVE
     }
   ];
 
   for (const s of studentsData) {
-    await prisma.student.upsert({
-      where: { email: s.email },
-      update: {},
-      create: s
+    await prisma.student.create({
+      data: s
     });
   }
-  console.log('[Seed] Test students created (e.g. aarav@campuscycle.edu / Student@123).');
+  console.log('[Seed] Seeded 5 official students for Electrical and Electronics Engineering:');
+  studentsData.forEach(s => console.log(`  - ${s.name} (${s.rollNo}) | ${s.email}`));
 
-  // 4. Bicycles
+  // 5. Bicycles Fleet
   const bicyclesData = [
     {
       bicycleCode: 'CYC-001',
@@ -166,11 +189,20 @@ async function main() {
           }
         });
       }
+    } else {
+      // Reset status to AVAILABLE except for maintenance
+      await prisma.bicycle.update({
+        where: { id: existing.id },
+        data: {
+          status: b.status,
+          location: b.location
+        }
+      });
     }
   }
-  console.log('[Seed] 8 Bicycles seeded across campus stations.');
+  console.log('[Seed] 8 Bicycles verified across campus stations.');
 
-  // 5. Initial Audit Log
+  // 6. Audit Log
   await prisma.auditLog.create({
     data: {
       actorId: 'SYSTEM',
@@ -178,7 +210,7 @@ async function main() {
       action: 'SYSTEM_BOOTSTRAP',
       entityType: 'System',
       entityId: 'ROOT',
-      metadata: JSON.stringify({ message: 'CampusCycle system bootstrapped with initial fleet and pricing.' })
+      metadata: JSON.stringify({ message: 'CampusCycle system refreshed with official Electrical & Electronics students.' })
     }
   });
 
@@ -192,5 +224,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    if (prisma) await prisma.$disconnect();
   });

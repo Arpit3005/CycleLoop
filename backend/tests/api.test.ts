@@ -40,9 +40,9 @@ async function runTests() {
   // 2. Student Login
   const studentLoginRes = await request('/auth/student/login', {
     method: 'POST',
-    body: { identifier: 'aarav@campuscycle.edu', password: 'Student@123' }
+    body: { identifier: '525005@student.nitandhra.ac.in', password: 'Student@123' }
   });
-  assert(studentLoginRes.ok && Boolean(studentLoginRes.data.token), 'Student logs in with email and receives JWT');
+  assert(studentLoginRes.ok && Boolean(studentLoginRes.data.token), 'Student (Arpit Kumar Ranjan) logs in with email and receives JWT');
   const studentToken = studentLoginRes.data.token;
 
   // 3. Admin Login
@@ -80,17 +80,17 @@ async function runTests() {
   assert(dupRentalRes.status === 400, 'Student cannot rent multiple bicycles concurrently');
 
   // 8. Prevent another student from renting the already rented CYC-001
-  const priyaLoginRes = await request('/auth/student/login', {
+  const anshumanLoginRes = await request('/auth/student/login', {
     method: 'POST',
-    body: { identifier: 'priya@campuscycle.edu', password: 'Student@123' }
+    body: { identifier: '525004@student.nitandhra.ac.in', password: 'Student@123' }
   });
-  const priyaToken = priyaLoginRes.data.token;
-  const priyaRentConflict = await request('/rentals/start', {
+  const anshumanToken = anshumanLoginRes.data.token;
+  const anshumanRentConflict = await request('/rentals/start', {
     method: 'POST',
-    token: priyaToken,
+    token: anshumanToken,
     body: { qrTokenOrCode: cyc001Token }
   });
-  assert(priyaRentConflict.status === 409, 'Another student cannot rent currently rented bicycle');
+  assert(anshumanRentConflict.status === 409, 'Another student (Anshuman) cannot rent currently rented bicycle');
 
   // 9. Prevent mismatched return (Priya trying to return Aarav\'s bike or Aarav scanning wrong bike)
   const wrongBikeReturn = await request('/rentals/return', {

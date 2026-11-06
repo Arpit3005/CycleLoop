@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CycleLoop – Smart Campus Bicycle Rental System",
   "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
     "build:backend": "cd backend && npm run build",
@@ -24,5 +25,8 @@
     "postgresql"
   ],
   "author": "Antigravity Engineering",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
 }

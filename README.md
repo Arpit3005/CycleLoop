@@ -103,14 +103,16 @@ Open your browser at:
 
 ## 👥 Seeded Test Credentials
 
-### 🎓 Students
-| Role | Email / Identifier | Password | Details |
-|---|---|---|---|
-| Student | `aarav@campuscycle.edu` (or `21CS042`) | `Student@123` | Aarav Sharma (Computer Science) |
-| Student | `priya@campuscycle.edu` (or `21EC019`) | `Student@123` | Priya Patel (Electronics) |
-| Student | `rohan@campuscycle.edu` (or `22ME088`) | `Student@123` | Rohan Verma (Mechanical) |
+### 🎓 Seeded Student Accounts (Electrical and Electronics Engineering)
+| Name | Roll Number | College Email | Default Password | Department |
+|---|---|---|---|---|
+| Arpit Kumar Ranjan | `525005` | `525005@student.nitandhra.ac.in` | `Student@123` | Electrical and Electronics Engineering |
+| Anshuman Mishra | `525004` | `525004@student.nitandhra.ac.in` | `Student@123` | Electrical and Electronics Engineering |
+| Linkan Sarkar | `525040` | `525040@student.nitandhra.ac.in` | `Student@123` | Electrical and Electronics Engineering |
+| Karthepan Murali Kannan | `525029` | `525029@student.nitandhra.ac.in` | `Student@123` | Electrical and Electronics Engineering |
+| Midathada Chaitanya Naidu | `525042` | `525042@student.nitandhra.ac.in` | `Student@123` | Electrical and Electronics Engineering |
 
-*(Quick demo buttons are also available on the Login page for one-click fill).*
+*(Students can sign in using either their roll number or their full college email address. Quick-fill buttons are provided on the login page).*
 
 ### 🛡️ Administrators
 | Role | Email | Password | Access Level |

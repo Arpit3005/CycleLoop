@@ -1,6 +1,24 @@
-node_modules
-dist
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables and secrets
 .env
-pgdata
+.env.*
+!.env.example
+
+# Build files
+dist/
+build/
+coverage/
+
+# Database
+pgdata/
+
+# Logs
 *.log
+npm-debug.log*
+
+# OS files
 .DS_Store
+Thumbs.db
