@@ -1,12 +1,10 @@
 import { PrismaClient, BicycleStatus, MaintenanceStatus, StudentStatus, AdminRole } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-import { ensurePostgresRunning } from '../src/embeddedDb.js';
 
 let prisma: PrismaClient;
 
 async function main() {
-  await ensurePostgresRunning(5432);
   prisma = new PrismaClient();
   console.log('[Seed] Seeding CycleLoop database with authentic student records...');
 
